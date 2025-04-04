@@ -1,0 +1,48 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'largestRectangle' function below.
+#
+# The function is expected to return a LONG_INTEGER.
+# The function accepts INTEGER_ARRAY h as parameter.
+#
+
+def largestRectangle(h):
+    # Write your code here
+    stack = []
+    max_area = 0
+    n = len(h)
+
+    for i in range(n):
+        # Maintain an increasing stack, pop if a smaller height is encountered
+        while stack and h[i] < h[stack[-1]]:
+            height = h[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+        
+    while stack:
+        height = h[stack.pop()]
+        width = n if not stack else n - stack[-1] - 1
+        max_area = max(max_area, height * width)
+
+    return max_area
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    h = list(map(int, input().rstrip().split()))
+
+    result = largestRectangle(h)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
