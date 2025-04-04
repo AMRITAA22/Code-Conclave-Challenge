@@ -1,0 +1,34 @@
+def square_ten_tree_decomposition(L, R):
+    levels = []
+    power = 1
+    while power <= R - L + 1:
+        power *= 10
+    power //= 10
+
+    while L <= R:
+        while power > (R - L + 1):
+            power //= 10
+        
+        levels.append(len(str(power)) - 1)
+        L += power
+    
+    # Compress the output format
+    compressed = []
+    count = 1
+    for i in range(1, len(levels)):
+        if levels[i] == levels[i - 1]:
+            count += 1
+        else:
+            compressed.append((count, levels[i - 1]))
+            count = 1
+    compressed.append((count, levels[-1]))
+
+    # Print output in required format
+    print(len(compressed))
+    for block in compressed:
+        print(block[0], block[1])
+
+# Example Test Case
+L = int(input().strip())
+R = int(input().strip())
+square_ten_tree_decomposition(L, R)
